@@ -1,7 +1,6 @@
 package com.clouway.bank.http;
 
 import com.clouway.bank.CurrentUser;
-import com.clouway.bank.db.Session;
 import com.clouway.bank.validators.NumberValidator;
 import com.google.inject.Inject;
 import com.google.sitebricks.At;
