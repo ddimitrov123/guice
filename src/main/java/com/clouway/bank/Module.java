@@ -6,6 +6,14 @@ import com.clouway.bank.validators.NumberValidator;
 import com.clouway.bank.validators.RegExValidator;
 import com.clouway.bank.validators.UserValidator;
 import com.google.inject.AbstractModule;
+import com.google.inject.Provider;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+import com.google.inject.servlet.RequestScoped;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 /**
  * @author Dimitar Dimitrov (dimitar.dimitrov045@gmail.com)
@@ -13,11 +21,21 @@ import com.google.inject.AbstractModule;
 public class Module extends AbstractModule {
   @Override
   protected void configure() {
-    bind(ConProvider.class).to(ConnectionConProvider.class);
     bind(UserValidator.class).to(RegExValidator.class);
     bind(UserRepository.class).to(PersistenceUserRepository.class);
     bind(SessionRepository.class).to(PersistenceSessionRepository.class);
     bind(NumberValidator.class).to(AmountValidator.class);
     bind(HistoryRepository.class).to(PersistentHistoryRepository.class);
+  }
+
+  @Provides
+  @RequestScoped
+  Connection connection(){
+    try {
+      return DriverManager.getConnection("jdbc:postgresql://localhost:5432/bank", "postgres", "123456");
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return null;
   }
 }

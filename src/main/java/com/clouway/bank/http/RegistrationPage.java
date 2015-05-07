@@ -12,7 +12,7 @@ import com.google.sitebricks.http.Post;
  */
 @At("/registration")
 @Show("registration.html")
-public class Registration {
+public class RegistrationPage {
   public String username;
   public String password;
   public String message;
@@ -20,7 +20,7 @@ public class Registration {
   private UserRepository userRepository;
 
   @Inject
-  public Registration(UserValidator validator, UserRepository userRepository) {
+  public RegistrationPage(UserValidator validator, UserRepository userRepository) {
     this.validator = validator;
     this.userRepository = userRepository;
   }

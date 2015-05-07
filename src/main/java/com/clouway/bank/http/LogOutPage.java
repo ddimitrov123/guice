@@ -15,14 +15,14 @@ import javax.servlet.http.HttpServletResponse;
  */
 @At("/logout")
 @Show("/home")
-public class LogOut {
+public class LogOutPage {
   private SessionRepository sessionRepository;
   private HttpServletRequest request;
   private HttpServletResponse response;
   public String online;
 
   @Inject
-  public LogOut(SessionRepository sessionRepository, HttpServletRequest request, HttpServletResponse response) {
+  public LogOutPage(SessionRepository sessionRepository, HttpServletRequest request, HttpServletResponse response) {
     this.sessionRepository = sessionRepository;
     this.request = request;
     this.response = response;
@@ -34,9 +34,9 @@ public class LogOut {
     if(sid != null){
       Cookie cookie = request.getCookies()[0];
       cookie.setMaxAge(0);
-      sessionRepository.deleteCookie(sessionRepository.getSession(sid).username);
+      sessionRepository.deleteSession(sessionRepository.getSession(sid).username);
       response.addCookie(cookie);
-      online = String.valueOf(sessionRepository.getAllCookies().size());
+      online = String.valueOf(sessionRepository.getActiveSessions());
     }
   }
 

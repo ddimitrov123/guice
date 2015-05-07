@@ -6,8 +6,6 @@ package com.clouway.bank.validators;
 public class AmountValidator implements NumberValidator {
   @Override
   public boolean isValid(String expressionOne, String expressionTwo) {
-    boolean deposit = expressionOne.matches("^[0-9]{1,10}([.|,][0-9]{1,2})?$");
-    boolean withdraw = expressionTwo.matches("^[0-9]{1,10}([.|,][0-9]{1,2})?$");
-    return deposit || withdraw;
+    return expressionOne.matches("^[0-9]{1,10}([.|,][0-9]{1,2})?$") || expressionTwo.matches("^[0-9]{1,10}([.|,][0-9]{1,2})?$");
   }
 }

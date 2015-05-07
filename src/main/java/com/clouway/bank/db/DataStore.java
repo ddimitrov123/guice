@@ -1,6 +1,7 @@
 package com.clouway.bank.db;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -13,17 +14,16 @@ import java.util.List;
  * @author Dimitar Dimitrov (dimitar.dimitrov045@gmail.com)
  */
 public class DataStore {
-  private ConProvider<Connection> conProvider;
+  private Provider<Connection> connection;
 
   @Inject
-  public DataStore(ConProvider conProvider) {
-    this.conProvider = conProvider;
+  public DataStore(Provider<Connection> connection) {
+    this.connection = connection;
   }
 
   public boolean execute(String query) {
-    Connection connection = conProvider.get();
     try {
-      connection.createStatement().execute(query);
+      connection.get().createStatement().execute(query);
     } catch (SQLException e) {
       return false;
     }
@@ -31,10 +31,9 @@ public class DataStore {
   }
 
   public <T> T fetchRow(String query, RowFetcher<T> fetcher) {
-    Connection connection = conProvider.get();
     T rowItem = null;
     try {
-      Statement stmt = connection.createStatement();
+      Statement stmt = connection.get().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       while (rs.next()) {
         rowItem = fetcher.fetchRow(rs);
@@ -47,10 +46,9 @@ public class DataStore {
   }
 
   public <T> List<T> fetchRows(String query, RowFetcher<T> fetcher) {
-    Connection connection = conProvider.get();
     List<T> result = new ArrayList<T>();
     try {
-      Statement stmt = connection.createStatement();
+      Statement stmt = connection.get().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       while (rs.next()) {
         T rowItem = fetcher.fetchRow(rs);
@@ -61,5 +59,18 @@ public class DataStore {
       e.printStackTrace();
     }
     return result;
+  }
+
+  public int getNumberOfRows(){
+    int count = 0;
+    try {
+      ResultSet rs = connection.get().createStatement().executeQuery("SELECT count(*) from cookies");
+      while (rs.next()){
+        count = rs.getInt("count");
+      }
+    } catch (SQLException e) {
+      e.printStackTrace();
+    }
+    return count;
   }
 }

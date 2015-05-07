@@ -16,7 +16,7 @@ import java.math.BigDecimal;
  */
 @At("/welcome")
 @Show("welcome.html")
-public class Welcome {
+public class WelcomePage {
   public String deposit;
   public String withdraw;
   public String display;
@@ -25,7 +25,7 @@ public class Welcome {
   private final CurrentUser currentUser;
 
   @Inject
-  public Welcome(NumberValidator numberValidator, CurrentUser currentUser) {
+  public WelcomePage(NumberValidator numberValidator, CurrentUser currentUser) {
     this.numberValidator = numberValidator;
     this.currentUser = currentUser;
   }

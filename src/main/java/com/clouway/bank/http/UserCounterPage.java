@@ -2,6 +2,7 @@ package com.clouway.bank.http;
 
 import com.clouway.bank.db.SessionRepository;
 import com.google.inject.Inject;
+import com.google.inject.servlet.RequestScoped;
 import com.google.sitebricks.At;
 import com.google.sitebricks.Show;
 import com.google.sitebricks.http.Get;
@@ -11,18 +12,18 @@ import com.google.sitebricks.http.Get;
  */
 @At("/home")
 @Show("/home.html")
-public class UserCounter {
+public class UserCounterPage {
   private SessionRepository sessionRepository;
   public String online;
 
   @Inject
-  public UserCounter(SessionRepository sessionRepository) {
+  public UserCounterPage(SessionRepository sessionRepository) {
     this.sessionRepository = sessionRepository;
   }
 
   @Get
   public void get(){
-    online = String.valueOf(sessionRepository.getAllCookies().size());
+    online = String.valueOf(sessionRepository.getActiveSessions());
   }
 
 }

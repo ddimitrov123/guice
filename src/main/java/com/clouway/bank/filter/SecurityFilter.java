@@ -1,4 +1,4 @@
-package com.clouway.bank.filters;
+package com.clouway.bank.filter;
 
 import com.clouway.bank.db.SessionRepository;
 import com.google.inject.Inject;
@@ -42,14 +42,14 @@ public class SecurityFilter implements Filter {
       return;
     }
     if(!isValidTime(sid)){
-      sessionRepository.deleteCookie(sessionRepository.getSession(sid).username);
+      sessionRepository.deleteSession(sessionRepository.getSession(sid).username);
       Cookie cookie = httpRequest.getCookies()[0];
       cookie.setMaxAge(0);
       httpResponse.addCookie(cookie);
       httpResponse.sendRedirect("/login");
       return;
     }
-    sessionRepository.refreshCookie(sessionRepository.getSession(sid).username);
+    sessionRepository.refreshSession(sessionRepository.getSession(sid).username);
     filterChain.doFilter(servletRequest, servletResponse);
   }
 

@@ -7,9 +7,9 @@ CREATE TABLE cookies
 CREATE TABLE history
 (
     transaction VARCHAR(10),
-    before_transaction VARCHAR(20) NOT NULL,
+    beforeTransaction VARCHAR(20) NOT NULL,
     date DATE,
-    after_transaction VARCHAR(20) NOT NULL,
+    afterTransaction VARCHAR(20) NOT NULL,
     name VARCHAR
 );
 CREATE TABLE users
@@ -24,9 +24,9 @@ ALTER TABLE history ADD FOREIGN KEY (name) REFERENCES users (name);
 CREATE OR replace function insertIntoHistory() returns trigger AS $example_table$
 BEGIN
 if(new.balance > old.balance) then
-INSERT INTO history (transaction, before_transaction, date,  after_transaction, name) VALUES ('deposit', old.balance, CURRENT_TIMESTAMP(0), new.balance, old.name);
+INSERT INTO history (transaction, beforeTransaction, date,  afterTransaction, name) VALUES ('deposit', old.balance, CURRENT_TIMESTAMP(0), new.balance, old.name);
 else
-INSERT INTO history (transaction, before_transaction, date,  after_transaction, name) VALUES ('withdraw', old.balance, CURRENT_TIMESTAMP(0), new.balance, old.name);
+INSERT INTO history (transaction, beforeTransaction, date,  afterTransaction, name) VALUES ('withdraw', old.balance, CURRENT_TIMESTAMP(0), new.balance, old.name);
 end if;
 return old;
 END;

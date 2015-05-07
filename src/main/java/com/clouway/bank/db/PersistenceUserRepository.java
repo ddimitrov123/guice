@@ -39,15 +39,6 @@ public class PersistenceUserRepository implements UserRepository {
     dataStore.execute("UPDATE users SET balance = '" + newBalance + "' WHERE name = '" + name + "'");
   }
 
-//  @Override
-//  public Double findBalance(String cookieValue) {
-//    return dataStore.fetchRow("select balance from users inner join cookies on users.name = cookies.name where value = '" + cookieValue + "'", new RowFetcher<Double>() {
-//      @Override
-//      public Double fetchRow(ResultSet rs) throws SQLException {
-//        return rs.getDouble("balance");
-//      }
-//    });
-//  }
   @Override
   public Double findBalance(String username) {
     return dataStore.fetchRow("select balance from users where name = '" + username + "'", new RowFetcher<Double>() {

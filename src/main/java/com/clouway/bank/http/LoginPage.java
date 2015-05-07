@@ -1,20 +1,18 @@
 package com.clouway.bank.http;
 
 import com.clouway.bank.CurrentUser;
-import com.clouway.bank.db.SessionRepository;
 import com.clouway.bank.validators.UserValidator;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.sitebricks.At;
 import com.google.sitebricks.Show;
 import com.google.sitebricks.headless.Reply;
 import com.google.sitebricks.http.Post;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -22,18 +20,18 @@ import java.util.UUID;
  */
 @At("/login")
 @Show("login.html")
-public class Login {
+public class LoginPage {
   public String username;
   public String password;
   public String message;
 
   private UserValidator validator;
-  private HttpServletResponse response;
+  private Provider<HttpServletResponse> response;
   private CurrentUser currentUser;
 
 
   @Inject
-  public Login(UserValidator validator, HttpServletResponse response, CurrentUser currentUser) {
+  public LoginPage(UserValidator validator, Provider<HttpServletResponse> response, CurrentUser currentUser) {
     this.validator = validator;
     this.response = response;
     this.currentUser = currentUser;
@@ -47,11 +45,11 @@ public class Login {
       return null;
     }
     String sid = currentUser.getSid();
-    if (sid == null || currentUser.getSession() == null) {
+    if (sid == null || currentUser.getCurrentSession() == null) {
       UUID uuid = new UUID(10, 5);
       String randomValue = username + uuid.randomUUID().toString() + "qwerty";
       sid = sha1(randomValue);
-      response.addCookie(new Cookie("sid", sid));
+      response.get().addCookie(new Cookie("sid", sid));
       currentUser.registerCookie(username, sid);
     }
     currentUser.refreshCookie(username);

@@ -15,14 +15,14 @@ import java.util.List;
  */
 @At("/history")
 @Show("history.html")
-public class History {
+public class HistoryPage {
   public List<com.clouway.bank.History> history = new ArrayList<com.clouway.bank.History>();
   public int page = 0;
   private HistoryRepository historyRepository;
   private CurrentUser currentUser;
 
   @Inject
-  public History(HistoryRepository historyRepository, CurrentUser currentUser) {
+  public HistoryPage(HistoryRepository historyRepository, CurrentUser currentUser) {
     this.historyRepository = historyRepository;
     this.currentUser = currentUser;
   }
@@ -33,7 +33,7 @@ public class History {
       return "/history?page=0";
     }
     int offset = page * 5;
-    history = historyRepository.getLastTransactions(currentUser.getUsername(), offset);
+    history = historyRepository.getLastTransactions(currentUser.getCurrentSession().username, offset);
     if (history.size() == 0){
       return "/history?page=" + (page - 1);
     }

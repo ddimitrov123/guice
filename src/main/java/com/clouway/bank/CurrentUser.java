@@ -27,39 +27,27 @@ public class CurrentUser {
     this.userRepository = userRepository;
   }
 
-  public String getUsername() {
-    return sessionRepository.getSession(getSid()).username;
-  }
-
-  public String getSessionId() {
-    return sessionRepository.getSession(getSid()).sessionId;
-  }
-
-  public long getExpdate() {
-    return sessionRepository.getSession(getSid()).expdate;
+  public Session getCurrentSession() {
+    return sessionRepository.getSession(getSid());
   }
 
   public Double findBalance(){
-    return userRepository.findBalance(getUsername());
+    return userRepository.findBalance(getCurrentSession().username);
   }
   public void updateBalance(Double newBalance){
-    userRepository.updateBalance(getUsername(), newBalance);
+    userRepository.updateBalance(getCurrentSession().username, newBalance);
   }
 
   public User findUser(String username, String password){
     return userRepository.findUser(username, password);
   }
 
-  public Session getSession(){
-    return sessionRepository.getSession(getSid());
-  }
-
   public void registerCookie(String username, String sid){
-    sessionRepository.registerCookie(username, sid, new Date().getTime());
+    sessionRepository.registerSession(username, sid, new Date().getTime());
   }
 
   public void refreshCookie(String username){
-    sessionRepository.refreshCookie(username);
+    sessionRepository.refreshSession(username);
   }
 
   public String getSid(){
