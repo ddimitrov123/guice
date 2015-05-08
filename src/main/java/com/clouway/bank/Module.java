@@ -3,12 +3,10 @@ package com.clouway.bank;
 import com.clouway.bank.db.*;
 import com.clouway.bank.validators.AmountValidator;
 import com.clouway.bank.validators.NumberValidator;
-import com.clouway.bank.validators.RegExValidator;
+import com.clouway.bank.validators.UserRegExValidator;
 import com.clouway.bank.validators.UserValidator;
 import com.google.inject.AbstractModule;
-import com.google.inject.Provider;
 import com.google.inject.Provides;
-import com.google.inject.Singleton;
 import com.google.inject.servlet.RequestScoped;
 
 import java.sql.Connection;
@@ -21,7 +19,7 @@ import java.sql.SQLException;
 public class Module extends AbstractModule {
   @Override
   protected void configure() {
-    bind(UserValidator.class).to(RegExValidator.class);
+    bind(UserValidator.class).to(UserRegExValidator.class);
     bind(UserRepository.class).to(PersistenceUserRepository.class);
     bind(SessionRepository.class).to(PersistenceSessionRepository.class);
     bind(NumberValidator.class).to(AmountValidator.class);

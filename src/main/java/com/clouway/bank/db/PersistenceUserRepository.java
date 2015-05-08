@@ -36,12 +36,12 @@ public class PersistenceUserRepository implements UserRepository {
 
   @Override
   public void updateBalance(String name, Double newBalance) {
-    dataStore.execute("UPDATE users SET balance = '" + newBalance + "' WHERE name = '" + name + "'");
+    dataStore.execute("UPDATE users SET balance = '" + newBalance + "' WHERE name = '" + name + "';commit");
   }
 
   @Override
   public Double findBalance(String username) {
-    return dataStore.fetchRow("select balance from users where name = '" + username + "'", new RowFetcher<Double>() {
+    return dataStore.fetchRow("select balance from users where name = '" + username + "' for update", new RowFetcher<Double>() {
       @Override
       public Double fetchRow(ResultSet rs) throws SQLException {
         return rs.getDouble("balance");
